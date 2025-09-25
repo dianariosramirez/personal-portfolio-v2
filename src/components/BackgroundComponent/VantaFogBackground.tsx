@@ -36,9 +36,9 @@ export default function VantaFogBackground() {
                 midtoneColor: 0x6db3de,
                 lowlightColor: 0xffffff,
                 baseColor: 0x40668e,
-                blurFactor: 0.67,
-                speed: 2.2,
-                zoom: 1.2,
+                blurFactor: 0.90,
+                speed: 1,
+                zoom: 1,
             });
 
             vantaEffect.current = effect;

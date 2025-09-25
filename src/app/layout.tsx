@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
 
-import { Bellota_Text } from 'next/font/google';
+import { Raleway } from "next/font/google";
 
 import VantaFogBackground from "@/components/BackgroundComponent/VantaFogBackground";
 import { PrincipalContainer } from "@/components/Layout/PrincipalContainer";
 
-const bellotaText = Bellota_Text({
-  subsets: ['latin'],
-  weight: ['300', '400', '700'], // 300 para delgada, 700 para títulos
-  display: 'swap',
+const raleway = Raleway({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "700"],
+  display: "swap",
 });
 
-
 export const metadata: Metadata = {
-  metadataBase: new URL("https://github.com/dianariosramirez/personal-portfolio-v2"), // poner dominio
+  metadataBase: new URL(
+    "https://github.com/dianariosramirez/personal-portfolio-v2"
+  ), // poner dominio
   title: {
     default: "Diana Rios | Web Developer",
     template: "%s | Diana Rios",
@@ -28,7 +29,12 @@ export const metadata: Metadata = {
     "Fullstack",
     "Portfolio",
   ],
-  authors: [{ name: "Diana Rios", url: "https://github.com/dianariosramirez/personal-portfolio-v2" }],
+  authors: [
+    {
+      name: "Diana Rios",
+      url: "https://github.com/dianariosramirez/personal-portfolio-v2",
+    },
+  ],
   creator: "Diana Rios",
   publisher: "Diana Rios",
 
@@ -76,26 +82,34 @@ export const metadata: Metadata = {
   manifest: "/site.webmanifest",
 };
 
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="es" className={bellotaText.className} suppressHydrationWarning={true} data-lt-installed="true">
+    <html
+      lang="es"
+      className={raleway.className}
+      suppressHydrationWarning={true}
+      data-lt-installed="true"
+    >
       <head />
       <body
         style={{
           margin: 0,
-          height: '100%',
-          width: '100%',
-          overflow: 'hidden',
+          height: "100%",
+          width: "100%",
+          overflow: "hidden",
         }}
       >
         <VantaFogBackground />
         <div
           style={{
-            position: 'relative',
+            position: "relative",
             zIndex: 1,
-            width: '100vw',
-            height: '100vh',
+            width: "100vw",
+            height: "100vh",
           }}
         >
           <PrincipalContainer children={children} />
