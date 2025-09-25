@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
-
 import { Raleway } from "next/font/google";
+import type { Metadata } from "next";
 
 import VantaFogBackground from "@/components/BackgroundComponent/VantaFogBackground";
 import { PrincipalContainer } from "@/components/Layout/PrincipalContainer";
+import { LoaderMain } from "@/components/Layout/LoaderMain";
 
 const raleway = Raleway({
   subsets: ["latin"],
@@ -88,21 +88,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="es"
-      className={raleway.className}
-      suppressHydrationWarning={true}
-      data-lt-installed="true"
-    >
+    <html lang="es" className={raleway.className} data-lt-installed="true">
       <head />
       <body
-        style={{
-          margin: 0,
-          height: "100%",
-          width: "100%",
-          overflow: "hidden",
-        }}
+        style={{ margin: 0, height: "100%", width: "100%", overflow: "hidden" }}
       >
+        <LoaderMain />
         <VantaFogBackground />
         <div
           style={{

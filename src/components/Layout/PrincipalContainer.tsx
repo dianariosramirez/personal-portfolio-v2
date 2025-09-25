@@ -132,23 +132,6 @@ const styles: Record<string, React.CSSProperties> = {
     width: "100%",
     height: "100%",
   },
-  container: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "97%",
-    height: "95%",
-    border: "1px solid white",
-    color: "white",
-  },
-  sidebar: {
-    width: "30%",
-    padding: "25px",
-    display: "flex",
-    flexDirection: "column",
-    height: "100%",
-  },
   name: {
     fontSize: "4rem",
     fontWeight: 500,
@@ -186,7 +169,7 @@ const styles: Record<string, React.CSSProperties> = {
     transition: "all 0.3s ease",
   },
   footer: {
-    marginBottom: "10px",
+    marginBottom: "10%",
     textAlign: "center",
   },
   socials: {
@@ -194,7 +177,6 @@ const styles: Record<string, React.CSSProperties> = {
     display: "flex",
     justifyContent: "space-evenly",
     margin: "0 auto",
-    paddingBottom: "5px",
     fontSize: "1.5rem",
   },
   socialIcon: {
@@ -206,10 +188,28 @@ const styles: Record<string, React.CSSProperties> = {
     margin: 0,
     paddingTop: "5px",
   },
+  container: {
+    display: "flex",
+    flexDirection: "row",
+    width: "97%",
+    height: "95%",
+    border: "1px solid white",
+    color: "white",
+  },
+  sidebar: {
+    width: "30%",
+    padding: "25px",
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
+    position: "sticky",
+    top: 0,
+  },
   main: {
     width: "70%",
-    height: "100%",
     paddingRight: "25px",
     paddingLeft: "10%",
+    height: "100%",
+    overflowY: "auto",
   },
 };
