@@ -17,11 +17,7 @@
     "questions": [
       "type",
       "scope",
-      "subject",
-      "body",
-      "breaking",
-      "issues",
-      "lerna"
+      "subject"
     ],
     "scopes": [
       "",
