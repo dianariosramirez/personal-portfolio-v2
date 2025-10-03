@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa";
 
 const roles = [
@@ -13,12 +13,12 @@ const roles = [
 ];
 
 const navLinks = [
-  { href: "/", label: "Sobre mí" },
-  { href: "/proyectos", label: "Proyectos" },
-  { href: "/experiencia", label: "Experiencia laboral" },
-  { href: "/educacion", label: "Educación" },
-  { href: "/skills", label: "Skills" },
-  { href: "/contacto", label: "Contacto" },
+  { href: "#sobre-mi", label: "Sobre mí" },
+  { href: "#proyectos", label: "Proyectos" },
+  { href: "#experiencia", label: "Experiencia laboral" },
+  { href: "#educacion", label: "Educación" },
+  { href: "#skills", label: "Skills" },
+  { href: "#contacto", label: "Contacto" },
 ];
 
 export const PrincipalContainer = ({
@@ -29,7 +29,12 @@ export const PrincipalContainer = ({
   const pathname = usePathname();
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
   const [fade, setFade] = useState(true);
+  const [activeSection, setActiveSection] = useState("sobre-mi");
+  const mainRef = useRef<HTMLDivElement>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Efecto para el cambio de roles
   useEffect(() => {
     const interval = setInterval(() => {
       setFade(false);
@@ -40,6 +45,108 @@ export const PrincipalContainer = ({
     }, 2500);
 
     return () => clearInterval(interval);
+  }, []);
+
+  // Efecto para observar las secciones y actualizar navegación activa
+  useEffect(() => {
+    if (!mainRef.current) return;
+
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+        }
+        timeoutRef.current = setTimeout(() => {
+          let visibleSection = activeSection;
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const intersectionRatio = entry.intersectionRatio;
+              if (intersectionRatio > 0.5) {
+                visibleSection = entry.target.id;
+              }
+            }
+          });
+
+          if (visibleSection === activeSection) {
+            const sections = Array.from(mainRef.current!.querySelectorAll('section[id]'));
+            const visibleSections = sections.filter(section => {
+              const rect = section.getBoundingClientRect();
+              return rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 3;
+            });
+
+            if (visibleSections.length > 0) {
+              visibleSections.sort((a, b) => {
+                const aDistance = Math.abs(a.getBoundingClientRect().top - window.innerHeight / 3);
+                const bDistance = Math.abs(b.getBoundingClientRect().top - window.innerHeight / 3);
+                return aDistance - bDistance;
+              });
+
+              visibleSection = visibleSections[0].id;
+            }
+          }
+
+          if (visibleSection && visibleSection !== activeSection) {
+            setActiveSection(visibleSection);
+            window.history.replaceState(null, '', `#${visibleSection}`);
+          }
+        }, 100);
+      },
+      {
+        root: mainRef.current,
+        threshold: [0.1, 0.5, 0.9],
+        rootMargin: '-10% 0px -10% 0px'
+      }
+    );
+
+    const sections = mainRef.current.querySelectorAll('section[id]');
+    sections.forEach((section) => {
+      observerRef.current?.observe(section);
+    });
+
+    const hash = window.location.hash.replace('#', '');
+    if (hash && navLinks.some(link => link.href === `#${hash}`)) {
+      setActiveSection(hash);
+    }
+
+    return () => {
+      observerRef.current?.disconnect();
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [activeSection]);
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+
+    if (mainRef.current) {
+      const targetId = href.replace('#', '');
+      const targetSection = mainRef.current.querySelector(`#${targetId}`) as HTMLElement;
+
+      if (targetSection) {
+        mainRef.current.scrollTo({
+          top: targetSection.offsetTop - 50,
+          behavior: 'smooth'
+        });
+
+        setActiveSection(targetId);
+        window.history.replaceState(null, '', `#${targetId}`);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      [style*="overflow-y: auto"]::-webkit-scrollbar {
+        display: none;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
+    };
   }, []);
 
   return (
@@ -61,15 +168,17 @@ export const PrincipalContainer = ({
           {/* Navigation */}
           <nav style={styles.nav}>
             {navLinks.map((link) => {
-              const isActive = pathname === link.href;
+              const isActive = activeSection === link.href.replace('#', '');
               return (
-                <Link
+                <a
                   key={link.href}
                   href={link.href}
+                  onClick={(e) => handleNavClick(e, link.href)}
                   style={{
                     ...styles.navLink,
                     color: isActive ? "white" : "#aaa",
                     fontWeight: isActive ? 500 : 400,
+                    cursor: "pointer",
                   }}
                 >
                   <span
@@ -79,7 +188,7 @@ export const PrincipalContainer = ({
                     }}
                   />
                   <span style={styles.navText}>{link.label}</span>
-                </Link>
+                </a>
               );
             })}
           </nav>
@@ -117,7 +226,12 @@ export const PrincipalContainer = ({
         </aside>
 
         {/* Main content */}
-        <main style={styles.main}>{children}</main>
+        <main
+          ref={mainRef}
+          style={styles.main}
+        >
+          {children}
+        </main>
       </div>
     </div>
   );
@@ -193,7 +307,7 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: "row",
     width: "97%",
     height: "95%",
-    border: "1px solid white",
+    border: "0.5px solid white",
     color: "white",
   },
   sidebar: {
@@ -211,5 +325,8 @@ const styles: Record<string, React.CSSProperties> = {
     paddingLeft: "10%",
     height: "100%",
     overflowY: "auto",
+    scrollBehavior: "smooth",
+    scrollbarWidth: "none",
+    msOverflowStyle: "none",
   },
 };

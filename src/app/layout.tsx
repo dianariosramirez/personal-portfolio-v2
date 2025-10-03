@@ -88,7 +88,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={raleway.className} data-lt-installed="true">
+    <html lang="es" className={raleway.className} data-lt-installed="true" suppressHydrationWarning={true}>
       <head />
       <body
         style={{ margin: 0, height: "100%", width: "100%", overflow: "hidden" }}

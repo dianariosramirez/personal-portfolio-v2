@@ -1,12 +1,31 @@
+import { ContactSection } from "@/components/Sections/ContactSection";
+import { EducationSection } from "@/components/Sections/EducationSection";
+import { ExperienceSection } from "@/components/Sections/ExperienceSection";
+import { PrincipalSection } from "@/components/Sections/PrincipalSection";
+import { ProjectsSection } from "@/components/Sections/ProjectsSection";
+import { SkillsSection } from "@/components/Sections/SkillsSection";
+
 export default function HomePage() {
   return (
-    <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', height: '100%' }}>
-      <h1 style={{ fontSize: '1.7rem', fontWeight: '300', textAlign: 'right' }}>
-        ¡Hola! <br />
-        Soy <span style={{ fontWeight: '700' }}>desarrolladora web frontend</span>. <br /> Me apasiona transformar ideas en experiencias digitales funcionales y atractivas, dándoles vida a través del código.
-        <br />Mi curiosidad poco a poco me lleva a explorar el mundo <span style={{ fontWeight: '700' }}>fullstack</span>, donde descubro el ciclo completo de la creación web.<br />
-        Fuera de la programación, encuentro equilibrio en la música y la fotografía, hobbies que me enseñan a ver los detalles y la armonía, principios que aplico en cada proyecto.
-      </h1>
+    <div>
+      <section id='sobre-mi' style={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
+        <PrincipalSection />
+      </section>
+      <section id='proyectos' style={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
+        <ProjectsSection />
+      </section>
+      <section id='experiencia' style={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
+        <ExperienceSection />
+      </section>
+      <section id='educacion' style={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
+        <EducationSection />
+      </section>
+      <section id='skills' style={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
+        <SkillsSection />
+      </section>
+      <section id='contacto' style={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}>
+        <ContactSection />
+      </section>
     </div>
   );
 }

@@ -1,7 +1,8 @@
-import { CardMain } from "@/components/Projects/CardMain";
-import { dataProjects } from "@/lib/projects";
+import { dataProjects } from '@/lib/projects'
+import React from 'react'
+import { CardMain } from '../Projects/CardMain'
 
-export default function ProjectsPage() {
+export const ProjectsSection = () => {
   return (
     <div
       style={{
@@ -18,5 +19,5 @@ export default function ProjectsPage() {
         <CardMain key={index} project={project} />
       ))}
     </div>
-  );
+  )
 }
